@@ -1,5 +1,7 @@
 # VoxCPM2.0.mlx
 
+![voice cloning on Apple Silicon](assets/banner.png)
+
 **[VoxCPM2](https://github.com/OpenBMB/VoxCPM) (2B, tokenizer-free TTS, 30 languages) running natively on Apple Silicon via [MLX](https://github.com/ml-explore/mlx).**
 
 Zero weight conversion for the LM (577 tensors load by name), bit-exact AudioVAE, stateful streaming decode, 4-bit quantization. Verified module-by-module against the official PyTorch implementation.
@@ -93,6 +95,27 @@ One-time VAE conversion (`audiovae.pth` → MLX layout, LM needs none):
 ```bash
 python scripts/convert_vae.py path/to/VoxCPM2
 ```
+
+## CLI & agent integration
+
+```bash
+pip install -e .                       # → voxcpm2-mlx on PATH
+export VOXCPM2_MODEL=~/models/VoxCPM2
+
+voxcpm2-mlx "你好世界" --play                     # zero-shot
+voxcpm2-mlx "ສະບາຍດີ" --ref my_voice.wav -o out.wav   # clone any voice from ~5s
+```
+
+MCP server — one block of JSON plugs cloning TTS into **Claude Code / Codex / Cursor** or any MCP harness:
+
+```jsonc
+// .mcp.json
+{"mcpServers": {"voxcpm2": {
+    "command": "voxcpm2-mlx-mcp",
+    "env": {"VOXCPM2_MODEL": "/path/to/VoxCPM2"}}}}
+```
+
+Then just ask your agent: *"read this summary aloud in my voice"*.
 
 ## Samples
 

@@ -1,0 +1,28 @@
+[project]
+name = "voxcpm2-mlx"
+version = "0.1.0"
+description = "VoxCPM2 (2B tokenizer-free TTS, 30 languages) on Apple Silicon via MLX"
+readme = "README.md"
+license = {text = "Apache-2.0"}
+requires-python = ">=3.10"
+dependencies = [
+    "mlx>=0.30",
+    "numpy",
+    "transformers>=4.50",
+    "soundfile",
+    "scipy",
+]
+
+[project.optional-dependencies]
+mcp = ["mcp>=1.0"]
+
+[project.scripts]
+voxcpm2-mlx = "voxcpm2_mlx.cli:main"
+voxcpm2-mlx-mcp = "voxcpm2_mlx.mcp_server:main"
+
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["voxcpm2_mlx"]
